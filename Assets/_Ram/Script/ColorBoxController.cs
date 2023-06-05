@@ -5,47 +5,34 @@ using UnityEngine;
 public class ColorBoxController : MonoBehaviour
 {
     public GameObject cube;
-    public int noOfBox;
+    public int noOfBox = 4;
+
+    public List<Color> colors = new List<Color>();
 
     private void Start()
     {
-        CreateColorBox();
+        CreateColorCubes();
     }
 
-    private void CreateColorBox()
+
+    private void CreateColorCubes()
     {
-        int x = noOfBox/3;
-        int y = noOfBox / 3;
-        int z = noOfBox / 3;
+        int row = noOfBox / 2;
+        int column = noOfBox / 2;
+        int topRow = noOfBox / 2;
 
-        int xBox = 0;
-        int yBox = 0;
-        int zBox = 0;
-        // ----- calculation 
-
-        Debug.Log($"Value of X is {x} and Y is {y} and Z is {z}");
-
-        for (int i = 0; i < noOfBox; i++)
+        for (int i = 0; i < row; i++)
         {
-            if ((i+1) % 3 == 1)
+            for (int j = 0; j < column; j++)
             {
-                GameObject box = Instantiate(cube, transform);
-                box.name = i.ToString();
-                box.transform.position = new Vector3(xBox + 1, yBox, zBox);
-                xBox++;
-            }else if ((i + 1) % 3 == 2)
-            {
-                GameObject box = Instantiate(cube, transform);
-                box.name = i.ToString();
-                box.transform.position = new Vector3(xBox, yBox + 1, zBox);
-                yBox++;
-            }
-            else if ((i + 1) % 3 == 0)
-            {
-                GameObject box = Instantiate(cube, transform);
-                box.name = i.ToString();
-                box.transform.position = new Vector3(xBox, yBox, zBox + 1);
-                zBox++;
+                for (int r = 0; r < topRow; r++)
+                {
+                    GameObject _box = Instantiate(cube,transform);
+                    _box.transform.position = new Vector3(i, j, r);
+                    Color _color = colors[Random.Range(0, colors.Count)];
+                    _box.GetComponent<MeshRenderer>().material.color = _color;
+                    _box.name = ColorUtility.ToHtmlStringRGBA(_color).ToString();
+                }
             }
         }
     }
